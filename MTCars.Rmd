@@ -1,0 +1,29 @@
+---
+title: "Motor Trend Cars"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data
+
+This data is from Motor Trend magazine in 1974. 
+
+
+```{r summary mtcars}
+summary(mtcars)
+```
+
+## Plots
+
+```{r mtcars, echo=FALSE}
+library(ggplot2)
+mtcars$am <- factor(mtcars$am,levels=c(0,1),
+   labels=c("Automatic","Manual"))
+qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG")
+
+```
+
+
