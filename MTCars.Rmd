@@ -1,11 +1,15 @@
 ---
 title: "Motor Trend Cars"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(wvioplot) # for fancy graphs and plots
+
+install.packages("Hmisc")
+install.packages("utils")
+install.packages("pastecs")
+
 library(Hmisc) # some useful functions
 library(utils) # for downloading stuff from the internet
 library(pastecs) # for summary statistics
@@ -26,11 +30,19 @@ dim(mtcars) # The first number is the number of rows in the data frame and the s
 
 names(mtcars)
 
+# Labelling variables
+var.labels = c(mpg="Miles per gallon", cyl="Number of cylinders", disp="Displacement", hp="Horsepower", drat="Axle ratio", wt="Weight", qsec="1/4 mile time", vs="V/S", am="Transmission", gear="Number of forward gears", carb="Number of carburetors")
 
+label(mtcars) = lapply(names(var.labels), 
+                     function(x) label(mtcars[,x]) = var.labels[x])
+
+View(mtcars)
 ```
+
+
 2. Exploring the variables
 ```{r mtcars, echo=FALSE}
-stat.desc(mtcars@mpg, basic=false) # summary stats for variables of interest
+stat.desc(mtcars$mpg, basic=FALSE) # summary stats for variables of interest, not very necessary if the summary function will give the whole outputs.
 ```
 
 ## Plots
@@ -41,10 +53,29 @@ mtcars$am <- factor(mtcars$am,levels=c(0,1),
    labels=c("Automatic","Manual"))
 qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG")
 
-boxplot(mtcars@mpg, color="green") # creating boxplots
+# Some boxplot distributions
+boxplot(mtcars, las = 2, ylab="Number of cars", col=c("red", "sienna", "black", "blue", "royalblue", "yellow", "violet", "brown", "green", "palevioletred1", "darkgreen"))
 
-wvioplot(mtcars@mpg, color="green", names="Speed") # creating boxplots
+
+boxplot(mtcars$mpg~mtcars$am, las=2, col=c("yellow", "red"), ylab="Miles per gallon (mpg)", main="Distribution of mpg") # creating boxplots for automatic vs manual cars
+
+par(mfrow=c(1,3)) 
+boxplot(mtcars$wt, col="blue", xlab="Weight")
+boxplot(mtcars$carb, col="yellow", xlab="Carburetors")
+boxplot(mtcars$hp, col="cyan", xlab="Horsepower")
+
+# Looped Histograms
+    variables<-names(mtcars)
+  for(i in variables)
+  {
+    colors = c("red", "yellow", "green", "violet", "orange", "blue", "pink", "cyan") 
+    dev.new()
+    xLabel <- paste(var.labels[i]) 
+    hist(mtcars[, i],
+    main=paste("Distribution of", xLabel),
+    xlab=xLabel)
+    
+  }
+    
 
 ```
-
-
