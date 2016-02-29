@@ -5,15 +5,32 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(wvioplot) # for fancy graphs and plots
+library(Hmisc) # some useful functions
+library(utils) # for downloading stuff from the internet
+library(pastecs) # for summary statistics
+
 ```
 
 ## Data
 
 This data is from Motor Trend magazine in 1974. 
 
-
+1. Data overview
 ```{r summary mtcars}
+?mtcars
+
 summary(mtcars)
+
+dim(mtcars) # The first number is the number of rows in the data frame and the second is the number of columns.
+
+names(mtcars)
+
+
+```
+2. Exploring the variables
+```{r mtcars, echo=FALSE}
+stat.desc(mtcars@mpg, basic=false) # summary stats for variables of interest
 ```
 
 ## Plots
@@ -23,6 +40,10 @@ library(ggplot2)
 mtcars$am <- factor(mtcars$am,levels=c(0,1),
    labels=c("Automatic","Manual"))
 qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG")
+
+boxplot(mtcars@mpg, color="green") # creating boxplots
+
+wvioplot(mtcars@mpg, color="green", names="Speed") # creating boxplots
 
 ```
 
