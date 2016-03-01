@@ -1,29 +1,124 @@
 ---
 title: "Motor Trend Cars"
+<<<<<<< HEAD
 output: html_document
+=======
+output: pdf_document
+>>>>>>> origin/master
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+<<<<<<< HEAD
+=======
+
+library(Hmisc) # some useful functions
+library(utils) # for downloading stuff from the internet
+library(pastecs) # for summary statistics
+library(ggplot2)
+library(reshape2)
+
+>>>>>>> origin/master
 ```
 
 ## Data
 
 This data is from Motor Trend magazine in 1974. 
 
+<<<<<<< HEAD
 
 ```{r summary mtcars}
 summary(mtcars)
+=======
+1. Data overview
+```{r summary mtcars}
+?mtcars
+
+summary(mtcars)
+
+dim(mtcars) # The first number is the number of rows in the data frame and the second is the number of columns.
+
+names(mtcars)
+
+# Labelling variables
+var.labels = c(mpg="Miles per gallon", cyl="Number of cylinders", disp="Displacement", hp="Horsepower", drat="Axle ratio", wt="Weight", qsec="1/4 mile time", vs="V/S", am="Transmission", gear="Number of forward gears", carb="Number of carburetors")
+
+label(mtcars) = lapply(names(var.labels), 
+function(x) label(mtcars[,x]) = var.labels[x])
+
+View(mtcars)
+
+```
+
+
+2. Exploring the variables
+```{r descr, echo=FALSE}
+stat.desc(mtcars$mpg, basic=FALSE) # summary stats for variables of interest, not very necessary if the summary function will give the whole outputs.
+
+
+>>>>>>> origin/master
 ```
 
 ## Plots
 
+<<<<<<< HEAD
 ```{r mtcars, echo=FALSE}
+=======
+```{r plots, echo=FALSE}
+>>>>>>> origin/master
 library(ggplot2)
 mtcars$am <- factor(mtcars$am,levels=c(0,1),
    labels=c("Automatic","Manual"))
 qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG")
 
+<<<<<<< HEAD
 ```
 
+=======
+# Some boxplot distributions 
+boxplot(mtcars, las = 2, main="Boxplots of all variables", col=c("red", "sienna", "black", "blue", "royalblue", "yellow", "violet", "brown", "green", "palevioletred1", "darkgreen"))
+
+
+boxplot(mtcars$mpg~mtcars$am, las=2, col=c("yellow", "red"), ylab="Miles per gallon (mpg)", main="Distribution of mpg") # creating boxplots for automatic vs manual cars
+
+# Boxplots of variables of interest
+attach(mtcars)
+par(mfrow=c(1,3)) 
+boxplot(wt, col="blue", xlab="Weight")
+boxplot(carb, col="yellow", xlab="Carburetors")
+boxplot(hp, col="cyan", xlab="Horsepower")
+title("Boxplots of variables of interest", outer=TRUE)
+
+# Scatterplots of mpg (as DV) and other variables
+attach(mtcars)
+par(mfrow=c(1,3))
+plot(wt,mpg, main="Weight vs. speed (mpg)")
+plot(carb,mpg, main="Carburetors vs. speed (mpg)")
+plot(hp, mpg, main="Horsepower vs. speed (mpg)")
+
+# Histograms of chosen variables
+attach (mtcars)
+par(mfrow=c(1,3))
+hist(wt, main=paste(var.labels["wt"]))
+hist(carb, main=paste(var.labels["carb"]))
+hist(hp, main=paste(var.labels["hp"]))
+
+# Looped Histograms (does not work because am is not numeric)
+#     variables<-names(mtcars)
+#     for(i in variables)
+#   {
+#     colors = c("red", "yellow", "green", "violet", "orange", "blue", "pink", "cyan") 
+#     dev.new()
+#     xLabel <- paste(var.labels[i]) 
+#     hist(mtcars[, i],
+#     main=paste("Distribution of", xLabel),
+#     xlab=xLabel)
+#     
+    #}
+
+# All histograms (need some revision)
+ggplot(melt(mtcars),aes(x=value)) + geom_histogram() + facet_wrap(~variable)
+
+```
+>>>>>>> origin/master
 
