@@ -6,10 +6,6 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-install.packages("Hmisc")
-install.packages("utils")
-install.packages("pastecs")
-
 library(Hmisc) # some useful functions
 library(utils) # for downloading stuff from the internet
 library(pastecs) # for summary statistics
@@ -34,20 +30,21 @@ names(mtcars)
 var.labels = c(mpg="Miles per gallon", cyl="Number of cylinders", disp="Displacement", hp="Horsepower", drat="Axle ratio", wt="Weight", qsec="1/4 mile time", vs="V/S", am="Transmission", gear="Number of forward gears", carb="Number of carburetors")
 
 label(mtcars) = lapply(names(var.labels), 
-                     function(x) label(mtcars[,x]) = var.labels[x])
+function(x) label(mtcars[,x]) = var.labels[x])
 
 View(mtcars)
+
 ```
 
 
 2. Exploring the variables
-```{r mtcars, echo=FALSE}
+```{r descr, echo=FALSE}
 stat.desc(mtcars$mpg, basic=FALSE) # summary stats for variables of interest, not very necessary if the summary function will give the whole outputs.
 ```
 
 ## Plots
 
-```{r mtcars, echo=FALSE}
+```{r plots, echo=FALSE}
 library(ggplot2)
 mtcars$am <- factor(mtcars$am,levels=c(0,1),
    labels=c("Automatic","Manual"))
