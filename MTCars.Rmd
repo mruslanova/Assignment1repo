@@ -116,7 +116,7 @@ hist(hp, main=paste(var.labels["hp"]))
 #     
     #}
 
-# All histograms (need some revision)
+# All histograms (I can't really figure how to get different scales. I tried putting in the limit function, but it does not work here :())
 ggplot(melt(mtcars),aes(x=value)) + geom_histogram() + facet_wrap(~variable)
 
 ```
