@@ -18,5 +18,11 @@ library(rio)
 install.packages('ggplot2')
 library(ggplot2)
 
+library(Hmisc) # some useful functions
+library(utils) # for downloading stuff from the internet
+library(pastecs) # for summary statistics
+library(ggplot2) # for graphs
+library(reshape2) # for data formatting
+
 #load data set library
 library(MASS)
