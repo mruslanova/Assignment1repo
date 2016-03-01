@@ -2,7 +2,7 @@
 title: "US Arrests Data Transformations"
 author: "Katie, Sarah, Meerim"
 date: "February 29, 2016"
-output: html_document
+output: pdf_document
 ---
 
 source('~/Documents/Hertie 2016/Collaborative Social Science Data/GitHubTest/Assignment 1/USArrests_SourceFile.R')
