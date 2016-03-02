@@ -1,3 +1,6 @@
+# Source file for Assignment 1
+# Authors: Katie, Meerim, Sarah
+
 #get working directory
 getwd
 
