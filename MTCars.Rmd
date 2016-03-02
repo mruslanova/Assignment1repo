@@ -1,5 +1,7 @@
 ---
 title: "Motor Trend Cars"
+author: "Katie, Sarah, Meerim"
+date: "March 4, 2016"
 output: html_document
 
 ---
@@ -7,11 +9,13 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+source('~/GitHub/Assignment1repo/SourceFile.R')
+
 ```
 
 ## Data
 
-This data is from Motor Trend magazine in 1974. It presents data for 32 automobiles regarding performance (miles per gallon, gross horsepower, and 1/4 mile time) and design (cylinders, gears, carburetors, axle ratio, weight, displacement, transmission and engine type).
+This data is from Motor Trend magazine in 1974. It presents data for 32 automobiles regarding performance  and design.
 
 Variables:
 
@@ -20,6 +24,20 @@ Variables:
 names(mtcars)
 
 ```
+
+
+Explanation of variable names: mpg is miles per gallon; 
+cyl is number of cylinders; 
+disp is displacement (in cubic inches); 
+hp is horsepower; 
+drat is rear axle ratio; 
+wt is weight (in 1000 pounds); 
+qsec is 1/4 mile time; 
+vs is engine type (0 = vertical/1 = straight); 
+am is transmission type (0 = automatic, 1 = manual); 
+gear is number of forward gears; and 
+carb is number of carburetors
+
 
 ``` {r labels, echo = FALSE}
 # Labelling variables
@@ -31,69 +49,120 @@ function(x) label(mtcars[,x]) = var.labels[x])
 ```
 
 
-2. Exploring the variables
+Basic statistics
 ```{r descr, echo=FALSE}
-stat.desc(mtcars$mpg, basic=FALSE) # summary stats for variables of interest, not very necessary if the summary function will give the whole outputs.
-
-summary(mtcars)
-
+options(digits=2)
+stat.desc(mtcars, basic = TRUE, desc=FALSE) 
 ```
 
-## Plots
-# Some boxplot distributions 
+
+There are no null or missing values. Displacement and horsepower have wide ranges. 
+
+
+Means
+``` {r means, echo=FALSE}
+for (i in 1:length(names(mtcars))) {
+  mtcars[, i] %>%
+    mean(,na.rm=FALSE) %>%
+    round(digits=2) %>%
+    paste(names(mtcars)[i], ., '\n') %>%  
+    cat()
+}
+```
+
+
+The average miles per gallon is about 20, the average horsepower is about 147, and the average quarter-mile time is about 18 seconds. For engine and transmission types, 44% have vertical-style engines and 41% have automatic transmissions. Other characteristics of the data will be further explored in the plots. 
+
+
+# Plots
+
+### Boxplot distributions: MPG
+
 ```{r am boxplots, echo=FALSE}
-
-mtcars$am <- factor(mtcars$am,levels=c(0,1),
-   labels=c("Automatic","Manual"))
-qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG", fill = factor(mtcars$am)) + guides(fill=FALSE) +scale_fill_manual(values=c("cadetblue", "skyblue"))
+# encode "am" as a vector (or category) and label 0/1 as automatic/manual
+mtcars$am <- factor(mtcars$am,levels=c(0,1), labels=c("Automatic","Manual"))
+# now plot mpg as a boxplot for the two transmission types on one graph, coloring each factor using "fill"
+qplot(mtcars$am, mtcars$mpg, geom = "boxplot", main = "MPG by Transmission Type", xlab = "Transmission", ylab = "MPG", fill = factor(mtcars$am)) + guides(fill=FALSE) +scale_fill_manual(values=c("cyan1", "cyan3"))
+# repeat encoding and plotting process for "vs""
 mtcars$vs <- factor(mtcars$vs, levels =c(0,1), labels=c("Vertical", "Straight"))
-qplot(mtcars$vs, mtcars$mpg, geom = "boxplot", main = "MPG by Engine Type", xlab = "Engine", ylab = "MPG", fill = factor(mtcars$vs)) + guides(fill=FALSE)
+qplot(mtcars$vs, mtcars$mpg, geom = "boxplot", main = "MPG by Engine Type", xlab = "Engine", ylab = "MPG", fill = factor(mtcars$vs)) + guides(fill=FALSE) +scale_fill_manual(values=c("cyan2", "cyan4"))
 ```
 
-```{r boxplots}
+Manual transmissions and straight engines in this data set generally have better gas mileage. 
 
 
-boxplot(mtcars, las = 2, main="Boxplots of all variables", col=c("red", "sienna", "black", "blue", "royalblue", "yellow", "violet", "brown", "green", "palevioletred1", "darkgreen"))
-
-
-# Boxplots of variables of interest
+### Boxplot distributions: Horsepower, Weight and Displacement
+```{r boxplots, echo=FALSE, message=FALSE}
+# set up a graphic with multiple charts (1 row, 3 columns) using the mtcars data
 attach(mtcars)
 par(mfrow=c(1,3)) 
-boxplot(wt, col="blue", xlab="Weight")
-boxplot(carb, col="yellow", xlab="Carburetors")
-boxplot(hp, col="cyan", xlab="Horsepower")
-title("Boxplots of variables of interest", outer=TRUE)
-
-# Scatterplots of mpg (as DV) and other variables
-attach(mtcars)
-par(mfrow=c(1,3))
-plot(wt,mpg, main="Weight vs. speed (mpg)")
-plot(carb,mpg, main="Carburetors vs. speed (mpg)")
-plot(hp, mpg, main="Horsepower vs. speed (mpg)")
-
-# Histograms of chosen variables
-attach (mtcars)
-par(mfrow=c(1,3))
-hist(wt, main=paste(var.labels["wt"]))
-hist(carb, main=paste(var.labels["carb"]))
-hist(hp, main=paste(var.labels["hp"]))
-
-# Looped Histograms (does not work because am is not numeric)
-#     variables<-names(mtcars)
-#     for(i in variables)
-#   {
-#     colors = c("red", "yellow", "green", "violet", "orange", "blue", "pink", "cyan") 
-#     dev.new()
-#     xLabel <- paste(var.labels[i]) 
-#     hist(mtcars[, i],
-#     main=paste("Distribution of", xLabel),
-#     xlab=xLabel)
-#     
-    #}
-
-# All histograms (I can't really figure how to get different scales. I tried putting in the limit function, but it does not work here :())
-ggplot(melt(mtcars),aes(x=value)) + geom_histogram() + facet_wrap(~variable)
-
+# create simple boxplots, with labels and colors
+boxplot(hp, col="tomato3", xlab="Horsepower")
+boxplot(wt, col="sienna1", xlab="Weight", ylab="in 1000 pounds")
+boxplot(disp, col="tomato", xlab="Displacement", ylab="in cubic inches")
 ```
 
+All three variables vary widely, but displacement has an especially wide distribution. 
 
+
+### Histograms of gear, carburetor and cylinder Variables
+``` {r histograms, echo=FALSE, message=FALSE}
+# set up a graphic with multiple charts (1 row, 3 columns) 
+attach(mtcars)
+par(mfrow=c(1,3))
+# create a vector telling r the bins to use for a histogram
+gearbins <- c(1,2,3,4,5)
+# create histograms, with labels and colors
+hist(gear, xlab = "Gears", breaks=gearbins, col="powderblue", main=paste(var.labels["gear"]))
+hist(carb, xlab = "Carburetors", col="lightskyblue", main=paste(var.labels["carb"]))
+hist(cyl, xlab = "Cylinders", col="skyblue2", main=paste(var.labels["cyl"]))
+```
+
+Most cars had 3 or 4 gears, 1 or 3 carburetors, and 4 or 8 cylinders. 
+
+
+### Scatterplots showing correlation of variables with MPG, with lines of best fit and Lowess lines
+``` {r scatterplots, echo=FALSE}
+# set up a graphic with multiple charts (2 rows, 2 columns) using the mtcars data
+par(mfrow=c(2,2))
+# create scatterplot of wt and mpg with labels
+plot(wt,mpg, main="Weight and MPG", xlab = "Weight") 
+# add line of best fit
+abline(lm(mpg~wt), col="palegreen4")
+# add lowess line
+lines(lowess(wt,mpg, f=.9), col="palegreen")
+# repeat for other variables
+plot(hp, mpg, main="Horsepower and MPG", xlab="Horsepower")
+abline(lm(mpg~hp), col="palegreen4")
+lines(lowess(hp,mpg, f=.9), col="palegreen") 
+plot(gear,mpg, main="Gears and MPG", xlab = "Gears") 
+abline(lm(mpg~gear), col="palegreen4")
+lines(lowess(gear,mpg, f=.9), col="palegreen")
+plot(cyl,mpg, main="Cylinders and MPG", xlab = "Cylinders") 
+abline(lm(mpg~cyl), col="palegreen4")
+lines(lowess(cyl,mpg, f=.9), col="palegreen")
+```
+
+Weight, horsepower and cylinders are all negatively correlated with gas mileage. The number of gears does not appear to have a strong effect, though the best-fit line shows a slightly positve correlation. 
+
+
+### Scatterplots showing correlation of variables with quarter-mile time, with lines of best fit and Lowess lines
+``` {r more scatterplots, echo=FALSE}
+# set up a graphic with multiple charts (2 rows, 2 columns) using the mtcars data
+par(mfrow=c(2,2))
+# create more scatterplots as above, with labels, lines of best fit and lowess lines
+plot(wt,qsec, main="Weight and Quarter-mile", xlab = paste(var.labels["wt"]), ylab="in seconds") 
+abline(lm(qsec~wt), col="mediumorchid4")
+lines(lowess(wt,qsec, f=.9), col="mediumorchid")
+plot(hp, qsec, main="Horsepower and Quarter-mile", xlab=paste(var.labels["hp"]), ylab="in seconds")
+abline(lm(qsec~hp), col="mediumorchid4")
+lines(lowess(hp,qsec, f=.9), col="mediumorchid")
+plot(disp, qsec, main="Displacement and Quarter-mile", xlab=paste(var.labels["disp"]), ylab="in seconds")
+abline(lm(qsec~disp), col="mediumorchid4")
+lines(lowess(disp,qsec, f=.9), col="mediumorchid")
+plot(mpg, qsec, main="MPG and Quarter-mile", xlab=paste(var.labels["mpg"]), ylab="in seconds")
+abline(lm(qsec~mpg), col="mediumorchid4")
+lines(lowess(mpg,qsec, f=.9), col="mediumorchid")
+```
+
+Horsepower and displacement are negatively correlated with the quarter-mile time, that is, cars with more horsepower or a larger engine have faster times. Weight shows a very slight negative correlation, too. Gas mileage and quarter-mile time are positively correlated: the better the gas mileage, the slower the time. 
