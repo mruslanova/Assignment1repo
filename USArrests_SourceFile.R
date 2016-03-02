@@ -8,14 +8,13 @@ list.files
 setwd("/")
 getwd ()
 
-install.packages('dplyr')
 library(dplyr)
 
 #install for R Input/Output from online data source
-install.packages('rio')
+
 library(rio)
 
-install.packages('ggplot2')
+
 library(ggplot2)
 
 library(Hmisc) # some useful functions
