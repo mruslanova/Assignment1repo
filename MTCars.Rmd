@@ -2,8 +2,7 @@
 title: "Motor Trend Cars"
 author: "Katie, Sarah, Meerim"
 date: "March 4, 2016"
-output: html_document
-
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
