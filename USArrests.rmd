@@ -2,7 +2,7 @@
 title: "US Arrests Data Transformations"
 author: "Katie, Sarah, Meerim"
 date: "February 29, 2016"
-output: html_document
+output: pdf_document
 ---
 
 source('~/Documents/Hertie 2016/Collaborative Social Science Data/Assignment1repo/USArrests_SourceFile.R')
@@ -31,22 +31,36 @@ names(USArrests)
 
 ## Frequency of Violent Crime Arrests by Crime Type
 
+*Arrests for the US states in 1973 Per 100,000 Residents*
 ```{r, echo=FALSE}
 old.par <- par(mfrow=c(1, 3))
-hist(USArrests$Murder, main = 'Murder Arrests for the US states in 1973', xlab = 'Murder Arrests per 100,000 residents')
-hist(USArrests$Rape, main = 'Rape Arrests for the US states in 1973', xlab = 'Rape Arrests per 100,000 residents')
-hist(USArrests$Assault, main = 'Assault Arrests for the US states in 1973', xlab = 'Assault Arrests per 100,000 residents')
+hist(USArrests$Murder, main = 'Murder Arrests', xlab = 'Murder Arrests per 100,000 residents', col="powderblue")
+hist(USArrests$Rape, main = 'Rape Arrests', xlab = 'Rape Arrests per 100,000 residents', col="lightskyblue")
+hist(USArrests$Assault, main = 'Assault Arrests', xlab = 'Assault Arrests per 100,000 residents', col="skyblue2")
 par(old.par)
 ```
 
+
 ##Overview of Violent Crime Arrests
+
+All three variables vary widely, but **assault** has an especially wide distribution. There are far more assaults arrests per 100,000 than the other types of violent crime.
+
+*Distribution of Arrests for the US States in 1793*
+
 ```{r, echo=FALSE}
-boxplot(USArrests)
+attach(USArrests)
+par(mfrow=c(1,3)) 
+# create simple boxplots, with labels and colors
+boxplot(USArrests$Murder, col="tomato3", xlab="Murder", ylab="Arrests per 100,000 Reisdents")
+boxplot(USArrests$Assault, col="sienna1", xlab="Assault")
+boxplot(USArrests$Rape, col="tomato", xlab="Rape")
 ```
+
+
 
 ## Violent Arrests and Urban Populations
 
-Violent arrests plotted against the percent of the urban population
+Violent arrests plotted against the percent of the urban population. Murder, assault and rape are all positively correlated with the percentage of urban population. The murder does not appear to have a strong effect, though the best-fit line shows a slightly positve correlation.
 
 ```{r USArrests, echo=FALSE}
 old.par <- par(mfrow=c(1, 3))
@@ -54,28 +68,41 @@ old.par <- par(mfrow=c(1, 3))
 plot(x = USArrests$UrbanPop, y = USArrests$Murder,xlab = "Urban Population (%)", ylab = "Murder (Arrests per 100,000)", pch=0)
 title("Murder Arrest Rates")
 fit <- lm(USArrests$Murder ~ USArrests$UrbanPop)   # Murder 'as a linear function of' Urban Population
-abline(fit)
+abline(fit,  col="tomato")
 
 #plot of Urban Population vs. Rapes
 plot(x = USArrests$UrbanPop, y = USArrests$Rape,xlab = "Urban Population (%)", ylab = "Rape (Arrests per 100,000)", pch=1)
 title("Rape Arrest Rates")
 fit <- lm(USArrests$Rape ~ USArrests$UrbanPop)   # Rape 'as a linear function of' Urban Population
-abline(fit)
+abline(fit, col="tomato")
 
 #plot of Urban Population vs. Assault
 plot(x = USArrests$UrbanPop, y = USArrests$Assault,xlab = "Urban Population (%)", ylab = "Assault (Arrests per 100,000)", pch=2)
 title("Assault Arrest Rates")
 fit <- lm(USArrests$Assault ~ USArrests$UrbanPop)   # Assault 'as a linear function of' Urban Population
-abline(fit)
+abline(fit, col="tomato")
 par(old.par)
 ```
 
 
 ## Correlations between Urban Population and Violent Crime Rate
 
+
+The correlation between the percentage of urban population and assault is **0.26**, indicating a positive correlation.
+
 ```{r, echo=FALSE}
 cor.test(log(USArrests$UrbanPop), USArrests$Assault)
+```
+
+The correlation between the percentage of urban population and rape is **0.41**, indicating a strong, positive correlation.
+
+```{r, echo=FALSE}
 cor.test(log(USArrests$UrbanPop), USArrests$Rape)
+```
+
+The correlation between the percentage of urban population and murder is **0.08**, indicating a weakly positive correlation.
+
+```{r, echo=FALSE}
 cor.test(log(USArrests$UrbanPop), USArrests$Murder)
 ```
 
