@@ -14,11 +14,11 @@ This repository focuses on descriptive statistics of the two core datasets, <a h
 
 - <a href="https://github.com/mruslanova/Assignment1repo/blob/master/MTCars.pdf"> A pdf paper on the MTCars dataset </a>
 
-- <a href="https://github.com/mruslanova/Assignment1repo/blob/master/MTCars.html"> An html file on the MTCars dataset </a>
+- <a href="https://github.com/mruslanova/Assignment1repo/blob/master/MTCars.html"> A raw html file on the MTCars dataset </a>; <a href="https://cdn.rawgit.com/mruslanova/Assignment1repo/master/MTCars.html" > a ready html output on the MTCars dataset </a>
 
 - <a href="https://github.com/mruslanova/Assignment1repo/blob/master/Assignment1_USArrests.pdf"> A pdf paper on the USArrests dataset </a>
 
-- <a href="https://github.com/mruslanova/Assignment1repo/blob/master/Assignment1_USArrests.html"> An html file on the USArrests dataset </a>
+- <a href="https://github.com/mruslanova/Assignment1repo/blob/master/Assignment1_USArrests.html"> A raw html file on the USArrests dataset </a>; <a href="https://cdn.rawgit.com/mruslanova/Assignment1repo/master/USArrests.html"> a ready html output on the USArrests dataset </a>
  
 ## 2. Objectives of the repository
 The objective of this assignment is to get a sense of working with R studio and GitHub in order to practice for the final research paper.
